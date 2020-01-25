@@ -1,20 +1,30 @@
-import React, { useContext } from 'react';
-import TextInput from '../../components/TextInput/TextInput';
+import React, { useContext, useState } from 'react';
+import './Login.css';
 import Button from '../../components/Button/Button';
 import { AuthenticationContext } from '../../store/Store';
 
 const Login = React.memo( () => {
+
+    const [ secrets, setSecrets ] = useState( { secret1: '', secret2: '' } );
+
     const authContext = useContext( AuthenticationContext );
     const isAuthenticated = authContext.isAuthenticated;
-
-    const dispatchLogin = () => authContext.dispatch( { type: 'LOGIN', payload: 'manoj'} );
+    const processSecrets = () => authContext.dispatch( { type: 'LOGIN', payload: secrets } );
 
     if ( !isAuthenticated ) {
         return (
             <div>
-                <TextInput label='secret1' />
-                <TextInput label='secret2'/>
-                <Button name='Login' click={ dispatchLogin }  />
+                <span className="displayInline-25">secret1: </span>
+                <span className="displayInline-75">
+                    <input className="textInput" type="text" value={secrets.secret1} 
+                    onChange={ event => setSecrets( { ...secrets, secret1: event.target.value } )}/>
+                </span>
+                <span className="displayInline-25">secret2: </span>
+                <span className="displayInline-75">
+                    <input className="textInput" type="text" value={secrets.secret2} 
+                    onChange={ event => setSecrets( { ...secrets, secret2: event.target.value } )}/>
+                </span>
+                <Button name='Login' click={ processSecrets }  />
             </div>
         );
     }
