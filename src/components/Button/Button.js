@@ -1,13 +1,15 @@
 import React from 'react';
 import './Button.css';
 
-const Button = ( props ) => {
+const Button = React.memo ( ( props ) => {
     return (
-        <div className="div-button">
-            <button className="login">Login</button>
-        </div>
+        <React.Fragment>
+            <div className="div-button">
+                <button className="login" onClick={props.click}>{props.name}</button>
+            </div>
+        </React.Fragment>
     );
-};
+} );
 
 export default Button;
 

@@ -3,7 +3,7 @@ import TextInput from '../../components/TextInput/TextInput';
 import Button from '../../components/Button/Button';
 import { AuthenticationContext } from '../../store/Store';
 
-const Login = () => {
+const Login = React.memo( () => {
     const authContext = useContext( AuthenticationContext );
     const isAuthenticated = authContext.isAuthenticated;
 
@@ -14,11 +14,11 @@ const Login = () => {
             <div>
                 <TextInput label='secret1' />
                 <TextInput label='secret2'/>
-                <Button name='login' onClick={ dispatchLogin }  />
+                <Button name='Login' click={ dispatchLogin }  />
             </div>
-            );
+        );
     }
     return null;
- };
+ } );
 
 export default Login;
