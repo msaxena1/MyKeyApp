@@ -14,17 +14,19 @@ const Login = React.memo( () => {
     if ( !isAuthenticated ) {
         return (
             <div>
-                <span className="displayInline-25">secret1: </span>
-                <span className="displayInline-75">
-                    <input className="textInput" type="text" value={secrets.secret1} 
-                    onChange={ event => setSecrets( { ...secrets, secret1: event.target.value } )}/>
-                </span>
-                <span className="displayInline-25">secret2: </span>
-                <span className="displayInline-75">
-                    <input className="textInput" type="text" value={secrets.secret2} 
-                    onChange={ event => setSecrets( { ...secrets, secret2: event.target.value } )}/>
-                </span>
-                <Button name='Login' click={ processSecrets }  />
+                <form>
+                    <span className="displayInline-25">secret1: </span>
+                    <span className="displayInline-75">
+                        <input className="textInput" type="text" value={secrets.secret1} 
+                        onChange={ event => setSecrets( { ...secrets, secret1: event.target.value } )}/>
+                    </span>
+                    <span className="displayInline-25">secret2: </span>
+                    <span className="displayInline-75">
+                        <input className="textInput" type="text" value={secrets.secret2} 
+                        onChange={ event => setSecrets( { ...secrets, secret2: event.target.value } )}/>
+                    </span>
+                    <Button name='Login' click={ processSecrets }  />
+                </form>
             </div>
         );
     }
