@@ -17,6 +17,7 @@ function reducer( state, action ) {
             console.log(action.type + ' received: ' + JSON.stringify(action.payload));
             return { ...state, isAuthenticated: checkSecrets( action.payload.secret1, action.payload.secret2 ) };
         default:
+            console.log(' received: default' );
             return state;
     }
 }; 

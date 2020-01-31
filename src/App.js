@@ -41,12 +41,7 @@ const reducer = ( state, action ) => {
 const App = () => { 
   const authContext = useContext( AuthenticationContext );
   const isAuthenticated = authContext.isAuthenticated;
-  const addNewButton = isAuthenticated ? (
-    <div style={ divNewButton } >
-      <Button name='Add New' click={''} />
-    </div>
-    ) : 
-    null ;
+  console.log( isAuthenticated )
 
     const [ keyList, updateKeyList ] = useReducer( reducer, [] );
 
@@ -64,18 +59,12 @@ const App = () => {
         updateKeyList( { type: 'INIT', payload: keysFromFile } );
       } )
       .catch( (err) => console.log(err) );
-    });
+    }, [] );
+
 
     return (
-      <div>
-        <div>
-          <div style={ divAppName } >
-            <h1>MyKepApp</h1>
-          </div>
-          { addNewButton }
-        </div>
-          
-          <Login />
+      <div>         
+          { !isAuthenticated? (<Login />) : null }
           { keyList.map( index => (
             <Tile 
               url={index.url} 
