@@ -50,7 +50,7 @@ const App = () => {
       .then( () => {
         const keysFromFile = [
           { url: 'https://www.bankofamerica.com/', name: 'Bank Of America', idx: 0 },
-          { url: 'https://www.gmail.com/', name: 'Gmail', idx: 1 },
+          { url: 'https://www.google.com/', name: 'Gmail', idx: 1 },
           { url: 'https://www.facebook.com/', name: 'Facebook', idx: 2 },
           { url: 'https://www.twitter.com/', name: 'Twitter', idx: 3 },
           { url: 'https://www.github.com/', name: 'Github', idx: 4 }
@@ -64,15 +64,16 @@ const App = () => {
 
     return (
       <div>         
-          { !isAuthenticated? (<Login />) : null }
-          { keyList.map( index => (
-            <Tile 
-              url={index.url} 
-              name={index.name} 
-              key={index.idx}
-              content ={content}
-            />
-            ) )}
+          { !isAuthenticated? (<Login />) : 
+            keyList.map( index => (
+              <Tile 
+                url={index.url} 
+                name={index.name} 
+                key={index.idx}
+                content ={content}
+              />
+              ) ) 
+          }
       </div>
     );
 }

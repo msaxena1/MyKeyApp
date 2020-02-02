@@ -5,7 +5,6 @@ import Modal from '../Modal/Modal';
 
 const Tile = React.memo( ( props ) => {
     const [ showModal, setShowModal ] = useState( false );
-    const buttonTitle = showModal ? 'Hide Details' : 'Show Details';
     const toggleDetails = () => setShowModal( !showModal );
 
     const modal = showModal ? ( 
@@ -21,7 +20,7 @@ const Tile = React.memo( ( props ) => {
         <React.Fragment>
             <div className='tile' >
                 <div>
-                    <Button name={props.name} click={toggleDetails} />
+                    <Button name={props.name} url={props.url} click={toggleDetails} />
                 </div>
                 {modal}
             </div>
