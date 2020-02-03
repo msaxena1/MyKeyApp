@@ -53,7 +53,7 @@ const App = () => {
     return (
       <div>
         <div>
-          <h2>MyKeyApp </h2>
+          <h2 align='center'>MyKeyApp </h2>
           { isAuthenticated? <Button name='Add New' /> : null }
         </div>       
           { !isAuthenticated? (<Login />) : 
