@@ -11,18 +11,6 @@ const content = {
   email: 'mike@yahoo.com'
 }
 
-
-
-const divAppName = {
-  width: '70%',
-  display: 'inline-block'
-};
-
-const divNewButton = {
-  width: '20%',
-  display: 'inline-block',
-};
-
 const reducer = ( state, action ) => {
   switch ( action.type ) {
     case 'INIT':
@@ -49,11 +37,11 @@ const App = () => {
       Promise.resolve() // fetch()
       .then( () => {
         const keysFromFile = [
-          { url: 'https://www.bankofamerica.com/', name: 'Bank Of America', idx: 0 },
-          { url: 'https://www.google.com/', name: 'Gmail', idx: 1 },
-          { url: 'https://www.facebook.com/', name: 'Facebook', idx: 2 },
-          { url: 'https://www.twitter.com/', name: 'Twitter', idx: 3 },
-          { url: 'https://www.github.com/', name: 'Github', idx: 4 }
+          { url: 'https://www.bankofamerica.com/', name: 'Bank Of America' },
+          { url: 'https://www.google.com/', name: 'Gmail' },
+          { url: 'https://www.facebook.com/', name: 'Facebook' },
+          { url: 'https://www.twitter.com/', name: 'Twitter' },
+          { url: 'https://www.github.com/', name: 'Github' }
         ];
 
         updateKeyList( { type: 'INIT', payload: keysFromFile } );
@@ -63,14 +51,20 @@ const App = () => {
 
 
     return (
-      <div>         
+      <div>
+        <div>
+          <h2>MyKeyApp </h2>
+          { isAuthenticated? <Button name='Add New' /> : null }
+        </div>       
           { !isAuthenticated? (<Login />) : 
-            keyList.map( index => (
+            keyList.map( (item, index) => (
               <Tile 
-                url={index.url} 
-                name={index.name} 
-                key={index.idx}
+                url={item.url} 
+                name={item.name} 
+                key={item.idx}
                 content ={content}
+                style = {item.style}
+                key = {index}
               />
               ) ) 
           }
