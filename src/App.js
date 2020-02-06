@@ -25,7 +25,6 @@ const reducer = ( state, action ) => {
 const App = () => { 
   const authContext = useContext( AuthenticationContext );
   const isAuthenticated = authContext.isAuthenticated;
-  console.log( isAuthenticated )
 
     const [ keyList, updateKeyList ] = useReducer( reducer, [] );
 
@@ -42,6 +41,9 @@ const App = () => {
     }, [] );
 
     const addItemToList = ( entry ) => {
+      if ( !entry.addr.startsWith('http') ) {
+        entry.addr = 'https://'+ entry.addr;
+      }
       updateKeyList( { type: 'ADD', payload: {
         url: entry.addr, 
         name: entry.desc,

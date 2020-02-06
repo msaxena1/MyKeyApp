@@ -7,8 +7,6 @@ const Tile = React.memo( ( props ) => {
     
     const [ showModal, setShowModal ] = useState( false );
     const toggleDetails = () => setShowModal( !showModal ); 
-
-    console.log('showModal '+ showModal );
     const modal = showModal ? ( 
                     <Modal 
                         content={props.content} 
