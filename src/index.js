@@ -14,7 +14,7 @@ ReactDOM.render(
       <Route path='/add'>
         <AddNewForm />
       </Route>
-      <Route path='/'>
+      <Route exact path='/'>
         <App />
       </Route>
     </Switch>
