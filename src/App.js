@@ -4,6 +4,7 @@ import Login from './container/login/Login';
 import Tile from './components/Tile/Tile';
 import Button from './components/Button/Button';
 import { AuthenticationContext } from './store/Store';
+import AddNewForm from './components/AddNewForm/AddNewForm';  
 
 const content = {
   username: 'Mike',
@@ -55,16 +56,16 @@ const App = () => {
         <div>
           <h2 align='center'>MyKeyApp </h2>
           { isAuthenticated? <Button name='Add New' /> : null }
+          <AddNewForm />
         </div>       
           { !isAuthenticated? (<Login />) : 
             keyList.map( (item, index) => (
               <Tile 
                 url={item.url} 
                 name={item.name} 
-                key={item.idx}
-                content ={content}
-                style = {item.style}
-                key = {index}
+                content={content}
+                style={item.style}
+                key={index}
               />
               ) ) 
           }

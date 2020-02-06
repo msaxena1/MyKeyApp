@@ -2,6 +2,15 @@ import React, {useState} from 'react';
 import './AddNewForm.css';
 
 const AddNewForm = ( props ) => {
+
+    const [ desc, setDesc ] = useState('');
+    const [ addr, setAddr ] = useState('');
+    const [ user, setUser ] = useState('');
+    const [ pwd, setPwd ] = useState('');
+    const [ email, setEmail ] = useState('');
+    const [ phone, setPhone ] = useState('');
+    const [ misc, setMisc ] = useState('');
+    
     const submitHandler = ( event ) => {
         console.log( {desc, addr, user, pwd, email, phone, misc} );
         event.preventDefault();
@@ -11,14 +20,6 @@ const AddNewForm = ( props ) => {
         console.log( 'cancelHandler called' );
         // event.preventDefault()
     };
-    const [ desc, setDesc ] = useState('');
-    const [ addr, setAddr ] = useState('');
-    const [ user, setUser ] = useState('');
-    const [ pwd, setPwd ] = useState('');
-    const [ email, setEmail ] = useState('');
-    const [ phone, setPhone ] = useState('');
-    const [ misc, setMisc ] = useState('');
-
     return (
         <form className="modal-content" onSubmit={submitHandler}>
             <div className="container">
