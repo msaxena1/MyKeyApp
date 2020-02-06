@@ -4,15 +4,18 @@ import Button from '../Button/Button';
 import Modal from '../Modal/Modal';
 
 const Tile = React.memo( ( props ) => {
-    
+
+
     const [ showModal, setShowModal ] = useState( false );
     const toggleDetails = () => setShowModal( !showModal ); 
+    
     const modal = showModal ? ( 
                     <Modal 
                         content={props.content} 
                         url={props.url} 
                         name={props.name} 
                         click={toggleDetails}
+                        delete={props.delete}
                     />
                     ) : null ;
     // console.log('modal'+ JSON.stringify(modal))

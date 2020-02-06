@@ -15,8 +15,8 @@ const reducer = ( state, action ) => {
       return [ ...state, action.payload ];
     case 'DELETE':
       const keys = [ ...state ];
-      keys.pop();
-      return keys;
+      const newKeys = keys.filter(element => element.name !== action.payload.name);
+      return newKeys;
     default:
       return state;
   }
@@ -57,6 +57,11 @@ const App = () => {
       } } );
     }
 
+    const deleteItemFromList = ( entry ) => {
+      console.log('delete called: '+ entry)
+      updateKeyList( { type: 'DELETE', payload: { name: entry } } );
+    }
+
     return (
       <BrowserRouter>
         <Switch>
@@ -79,6 +84,7 @@ const App = () => {
                     content={item.content}
                     style={item.style}
                     key={index}
+                    delete={deleteItemFromList}
                   />
                   ) ) 
               }
