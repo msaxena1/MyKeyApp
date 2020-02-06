@@ -1,10 +1,11 @@
 import React, { useContext, useEffect, useReducer } from 'react';
+import {Link} from 'react-router-dom';
 import './App.css'
 import Login from './container/login/Login';
 import Tile from './components/Tile/Tile';
 import Button from './components/Button/Button';
 import { AuthenticationContext } from './store/Store';
-import AddNewForm from './components/AddNewForm/AddNewForm';  
+ 
 
 const content = {
   username: 'Mike',
@@ -50,13 +51,16 @@ const App = () => {
       .catch( (err) => console.log(err) );
     }, [] );
 
-
+    const goToAddNew = () => {
+      console.log('gotoaddnew')
+    }
     return (
       <div>
         <div>
           <h2 align='center'>MyKeyApp </h2>
-          { isAuthenticated? <Button name='Add New' /> : null }
-          <AddNewForm />
+          { isAuthenticated? <Link to='/add'><Button name='Add New' />
+            </Link>  : null }
+
         </div>       
           { !isAuthenticated? (<Login />) : 
             keyList.map( (item, index) => (
