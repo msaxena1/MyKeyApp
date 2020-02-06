@@ -1,18 +1,12 @@
 import React, { useContext, useEffect, useReducer } from 'react';
-import {Link} from 'react-router-dom';
+import { BrowserRouter, Switch, Route, Link } from 'react-router-dom';
 import './App.css'
 import Login from './container/login/Login';
 import Tile from './components/Tile/Tile';
 import Button from './components/Button/Button';
+import AddNewForm from './components/AddNewForm/AddNewForm'; 
 import { AuthenticationContext } from './store/Store';
  
-
-const content = {
-  username: 'Mike',
-  password: 'Password123',
-  email: 'mike@yahoo.com'
-}
-
 const reducer = ( state, action ) => {
   switch ( action.type ) {
     case 'INIT':
@@ -39,11 +33,7 @@ const App = () => {
       Promise.resolve() // fetch()
       .then( () => {
         const keysFromFile = [
-          { url: 'https://www.bankofamerica.com/', name: 'Bank Of America' },
-          { url: 'https://www.google.com/', name: 'Gmail' },
-          { url: 'https://www.facebook.com/', name: 'Facebook' },
-          { url: 'https://www.twitter.com/', name: 'Twitter' },
-          { url: 'https://www.github.com/', name: 'Github' }
+
         ];
 
         updateKeyList( { type: 'INIT', payload: keysFromFile } );
@@ -51,29 +41,50 @@ const App = () => {
       .catch( (err) => console.log(err) );
     }, [] );
 
-    const goToAddNew = () => {
-      console.log('gotoaddnew')
+    const addItemToList = ( entry ) => {
+      updateKeyList( { type: 'ADD', payload: {
+        url: entry.addr, 
+        name: entry.desc,
+        content: {
+          username: entry.user,
+          password: entry.pwd,
+          email: entry.email,
+          phone: entry.phone,
+          misc: entry.misc
+        }
+      } } );
     }
-    return (
-      <div>
-        <div>
-          <h2 align='center'>MyKeyApp </h2>
-          { isAuthenticated? <Link to='/add'><Button name='Add New' />
-            </Link>  : null }
 
-        </div>       
-          { !isAuthenticated? (<Login />) : 
-            keyList.map( (item, index) => (
-              <Tile 
-                url={item.url} 
-                name={item.name} 
-                content={content}
-                style={item.style}
-                key={index}
-              />
-              ) ) 
-          }
-      </div>
+    return (
+      <BrowserRouter>
+        <Switch>
+          <Route path='/add'>
+            <AddNewForm addItemToList={addItemToList}/>
+          </Route>
+          <Route exact path='/'>
+            <div>
+            <div>
+              <h2 align='center'>MyKeyApp </h2>
+              { isAuthenticated? <Link to='/add'><Button name='Add New' />
+                </Link>  : null }
+
+            </div>       
+              { !isAuthenticated? (<Login />) : 
+                keyList.map( (item, index) => (
+                  <Tile 
+                    url={item.url} 
+                    name={item.name} 
+                    content={item.content}
+                    style={item.style}
+                    key={index}
+                  />
+                  ) ) 
+              }
+          </div>
+          </Route>
+        </Switch>
+      </BrowserRouter>
+      
     );
 }
 

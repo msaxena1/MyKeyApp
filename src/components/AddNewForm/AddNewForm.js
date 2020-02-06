@@ -1,11 +1,12 @@
 import React, {useState, useContext} from 'react';
-import {Link} from 'react-router-dom';
+import {Link, useHistory } from 'react-router-dom';
 import './AddNewForm.css';
 import { AuthenticationContext } from '../../store/Store';
 
 const AddNewForm = ( props ) => {
     const authContext = useContext( AuthenticationContext );
     const isAuthenticated = authContext.isAuthenticated;
+    const history = useHistory();
 
     const [ desc, setDesc ] = useState('');
     const [ addr, setAddr ] = useState('');
@@ -16,14 +17,12 @@ const AddNewForm = ( props ) => {
     const [ misc, setMisc ] = useState('');
 
     const submitHandler = ( event ) => {
-        console.log( {desc, addr, user, pwd, email, phone, misc} );
+        props.addItemToList({desc, addr, user, pwd, email, phone, misc});
         event.preventDefault();
+        history.push('/');
     };
 
-    const cancelHandler = ( event ) => {
-        console.log( 'cancelHandler called' );
-    };
-    
+   
     const addForm = isAuthenticated ? (
         <form className="modal-content" onSubmit={submitHandler}>
         <div className="container">

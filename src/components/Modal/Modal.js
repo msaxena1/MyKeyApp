@@ -5,8 +5,8 @@ import Table from '../Table/Table';
 const Modal = React.memo( (props) => {
 
     return (
-        <div className='modal'>
-          <div className='modal-content'>
+        <div className='modal-details'>
+          <div className='modal-details-content'>
             <span className="close" onClick={props.click}>&times;</span>
             <a href={props.url} target='_blank' >{props.name}</a>
             <Table content={props.content}/>
