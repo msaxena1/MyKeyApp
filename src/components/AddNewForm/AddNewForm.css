@@ -3,7 +3,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
 /* Full-width input fields */
 input[type=text] {
   width: 100%;
-  padding: 15px;
+  padding: 10px 0 10px 0;
   margin: 5px 0 22px 0;
   display: inline-block;
   border: none;
@@ -18,7 +18,7 @@ input[type=text]:focus {
 
 /* Set a style for all buttons */
 button {
-  background-color: #4CAF50;
+  background-color:rgb(23, 211, 86);;
   color: white;
   padding: 14px 20px;
   margin: 8px 0;

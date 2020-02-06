@@ -13,7 +13,7 @@ const Modal = React.memo( (props) => {
             <span className="close" onClick={props.click}>&times;</span>
             <a href={props.url} target='_blank' >{props.name}</a>
             <Table content={props.content}/>
-            <p>.<button type="submit" onClick={deleteEntry} className="cancelbtn">Delete</button></p>
+            <p><button type="submit" onClick={deleteEntry} className="cancelbtnModal">Delete</button></p>
           </div>
         
         </div>

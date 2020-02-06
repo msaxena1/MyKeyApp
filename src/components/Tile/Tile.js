@@ -25,7 +25,7 @@ const Tile = React.memo( ( props ) => {
                 <div>
                     <Button name={props.name} url={props.url} click={toggleDetails} />
                 </div>
-                <div>{modal}</div>
+                {modal}
                 
             </div>
         </React.Fragment>
