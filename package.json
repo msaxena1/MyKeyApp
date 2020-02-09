@@ -10,9 +10,12 @@
     "react-scripts": "0.9.5",
     "url-parse": "^1.4.7"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "electron": "^8.0.0"
+  },
   "scripts": {
-    "start": "react-scripts start",
+    "electron": "electron server.js",
+    "react": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
