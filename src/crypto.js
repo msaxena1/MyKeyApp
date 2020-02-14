@@ -57,12 +57,14 @@ const decrypt = async function( cipher, key, iv ) {
   return new TextDecoder().decode( decryptText );
 }
 
+const getIv = () => crypto.getRandomValues(new Uint8Array(16));
+
 async function test() {
   const text1 = 'An obscure body in the S-K System, your majesty. The inhabitants refer to it as the planet Earth.';
   const text2 = 'The inhabitants refer to it as the planet Earth.';
   const key = await getKey( text1, text2 );
 
-  const iv = window.crypto.getRandomValues(new Uint8Array(16));
+  const iv = getIv();
   const textToEncrypt = 'the quick brown fox jump over the lazy dogs back'
 
   const cipherText = await encrypt(textToEncrypt, key, iv );
@@ -73,4 +75,4 @@ async function test() {
 }
 
 // test()
-export default { getKey, encrypt, decrypt }
+export default { getKey, getIv, encrypt, decrypt }
