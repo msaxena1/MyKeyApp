@@ -5,15 +5,25 @@ import Login from './container/login/Login';
 import Tile from './components/Tile/Tile';
 import Button from './components/Button/Button';
 import AddNewForm from './components/AddNewForm/AddNewForm'; 
+import { getIv, encrypt, decrypt } from './crypto';
  
-const updateServer = (url, newKeyList) => {
-  fetch( url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(newKeyList)
-  })
+const updateServer = async (url, key, newKeyList) => {
+  const iv = getIv();
+  const payload = {};
+  const cryptoKey = key;
+
+  payload.iv = iv;
+
+  const encryptText =  await encrypt(JSON.stringify(newKeyList), cryptoKey, iv);
+  payload.data = encryptText;
+
+  return fetch( url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    })
   .then( (response) => response.json() )
   .then( ( data ) => {
     console.log( JSON.stringify(data))
@@ -32,9 +42,8 @@ const reducer = ( state, action ) => {
       const newKeys = keys.filter(element => element.name !== action.payload.name);
       return newKeys;
     case 'UPDATE_SERVER':
-      updateServer( action.payload.url, state );
-      break;
-
+      updateServer( action.payload.url, action.payload.key, state );
+      return [ ...state ];
     default:
       return state;
   }
@@ -111,19 +120,23 @@ const App = () => {
     };
 
     updateKeyList( { type: 'ADD', payload: payload } );
-    updateKeyList( { type: 'UPDATE_SERVER', payload: {url: url} } );
+    console.log(encryptKey);
+    updateKeyList( { type: 'UPDATE_SERVER', payload: {url: url, key: encryptKey.encryptKey} } );
   }
 
   const deleteItemFromList = ( entry ) => {
     updateKeyList( { type: 'DELETE', payload: { name: entry } } );
-    updateKeyList( { type: 'UPDATE_SERVER', payload: {url: url} } );
+    updateKeyList( { type: 'UPDATE_SERVER', payload: {url: url, key: encryptKey} } );
   }
 
   return (
     <BrowserRouter>
       <Switch>
         <Route path='/add'>
-          <AddNewForm addItemToList={addItemToList}/>
+          <AddNewForm 
+            isAuthenticated={isAuthenticated} 
+            addItemToList={addItemToList}
+          />
         </Route>
         <Route exact path='/'>
           <div>

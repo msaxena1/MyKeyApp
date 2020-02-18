@@ -1,11 +1,9 @@
 import React, {useState, useContext} from 'react';
 import {Link, useHistory } from 'react-router-dom';
 import './AddNewForm.css';
-import { AuthenticationContext } from '../../store/Store';
 
 const AddNewForm = ( props ) => {
-    const authContext = useContext( AuthenticationContext );
-    const isAuthenticated = authContext.isAuthenticated;
+    const isAuthenticated = props.isAuthenticated;
     const history = useHistory();
 
     const [ desc, setDesc ] = useState('');
@@ -17,8 +15,8 @@ const AddNewForm = ( props ) => {
     const [ misc, setMisc ] = useState('');
 
     const submitHandler = ( event ) => {
-        props.addItemToList({desc, addr, user, pwd, email, phone, misc});
         event.preventDefault();
+        props.addItemToList({desc, addr, user, pwd, email, phone, misc});
         history.push('/');
     };
 
