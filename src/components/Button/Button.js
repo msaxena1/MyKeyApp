@@ -12,7 +12,10 @@ const Button = React.memo ( ( props ) => {
     return (
         <React.Fragment>
             <div className="div-button">
-                <button className="btn" onClick={props.click} >
+                <button className="btn" onClick={ (e) => { 
+                    e.preventDefault();
+                    props.click(e);
+                    }} >
                     <img className='buttonImg' src={favUrl} alt='' />
                     {props.name}
                 </button>

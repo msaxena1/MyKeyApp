@@ -1,11 +1,10 @@
-import React, { useContext, useEffect, useReducer } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import { BrowserRouter, Switch, Route, Link } from 'react-router-dom';
 import './App.css'
 import Login from './container/login/Login';
 import Tile from './components/Tile/Tile';
 import Button from './components/Button/Button';
 import AddNewForm from './components/AddNewForm/AddNewForm'; 
-import { AuthenticationContext } from './store/Store';
  
 const updateServer = (url, newKeyList) => {
   fetch( url, {
@@ -34,29 +33,65 @@ const reducer = ( state, action ) => {
       return newKeys;
     case 'UPDATE_SERVER':
       updateServer( action.payload.url, state );
+      break;
+
     default:
       return state;
   }
 };
 
+
+
 const App = () => { 
-  const authContext = useContext( AuthenticationContext );
-  const isAuthenticated = authContext.isAuthenticated;
-  const hostname = window.location.host;
-  const url = `http://${ hostname }/data`
+  const [ isAuthenticated, setIsAuthenticated ] = useState( false );
   const [ keyList, updateKeyList ] = useReducer( reducer, [] );
+  const [ iv, setIv ] = useState( undefined );
+  const [ isFirstTime, setIsFirstTime ] = useState( true );
+
+
+  const encryptKeyReducer = ( state, action ) => {
+    switch ( action.type ) {
+      case 'UPDATE_KEY':
+        const newState = { ...state, encryptKey: action.payload };
+        console.log('newState: ' + JSON.stringify(newState));
+        console.log(keyList);
+        setIsAuthenticated( true );
+        return newState;
+  
+      default:
+        return state;
+    }
+  };
+  const [ encryptKey, setEncryptKey ] = useReducer( encryptKeyReducer, {} );
+
+  
+  const hostname = window.location.host;
+  const url = `http://${ hostname }/data`;
+  console.log('encryptKey: ' + JSON.stringify(encryptKey));
+  console.log('keyList: ' + JSON.stringify(keyList));
 
   useEffect( () => {
-    fetch( url )
-    .then( (response) => response.json() )
+
+    //fetch( url )
+    // Promise.resolve({"success":"true", "iv": "manoj", "data":[{"url":"https://github.com","name":"github","content":{"username":"m-github","password":"m-github-pwd","email":"m@github.com","phone":"72323243434","misc":"misc-github"}},{"url":"https://www.yahoo.com","name":"yahoo","content":{"username":"m-yahoo","password":"m-yahoo-pwd","email":"manoj@yahoo.com","phone":"7","misc":"yaho misc"}}]})
+    Promise.resolve({"success":"true",  "data":[]})
+    //.then( (response) => response.json() )
     .then( ( res ) => {
       if ( res.success ) {
         const keysFromFile = res.data;
 
+        if ( res.iv ) {
+          setIv( res.iv );
+        }
+
+        if( keysFromFile.length ) {
+          setIsFirstTime( false );
+        }
+
         updateKeyList( { type: 'INIT', payload: keysFromFile } );
       }
     } )
-    .catch( (err) => console.log('fetch err') );
+    .catch( (err) => console.log('fetch err' + err) );
   }, [] );
 
   const addItemToList = ( entry ) => {
@@ -98,7 +133,11 @@ const App = () => {
               </Link>  : null }
 
           </div>       
-            { !isAuthenticated? (<Login />) : 
+            { !isAuthenticated? (
+              <Login isFirstTime={isFirstTime} 
+              isAuthenticated={isAuthenticated} 
+              setEncryptKey={setEncryptKey} />
+              ) : 
               keyList.map( (item, index) => (
                 <Tile 
                   url={item.url} 

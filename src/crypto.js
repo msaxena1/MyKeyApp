@@ -1,60 +1,81 @@
-'use strict'
-
 const getKey = async function ( s1, s2 ) {
-  const digestS1 = await crypto.subtle.digest('SHA-512', new TextEncoder().encode(s1));
-  const digestS2 = await crypto.subtle.digest('SHA-512', new TextEncoder().encode(s2));
+  try {
 
-  const s2Key = await crypto.subtle.importKey(
-    'raw',
-    new Uint8Array( digestS2 ),
-    { name: 'PBKDF2' },
-    false,
-    [ 'deriveBits', 'deriveKey' ]
-  );
+    const digestS1 = await crypto.subtle.digest('SHA-512', new TextEncoder().encode(s1));
+    const digestS2 = await crypto.subtle.digest('SHA-512', new TextEncoder().encode(s2));
 
-  const key = await crypto.subtle.deriveKey(
-    {
-      name: 'PBKDF2',
-      salt: new Uint8Array( digestS1 ),
-      iterations: 100000,
-      hash: 'SHA-512'
-    },
-    s2Key,
-    { name: 'AES-GCM', length: 256},
-    true,
-    [ 'encrypt', 'decrypt' ]
-  );
+    const s2Key = await crypto.subtle.importKey(
+      'raw',
+      new Uint8Array( digestS2 ),
+      { name: 'PBKDF2' },
+      false,
+      [ 'deriveBits', 'deriveKey' ]
+    );
 
-  return key;
+    const key = await crypto.subtle.deriveKey(
+      {
+        name: 'PBKDF2',
+        salt: new Uint8Array( digestS1 ),
+        iterations: 100000,
+        hash: 'SHA-512'
+      },
+      s2Key,
+      { name: 'AES-GCM', length: 256},
+      true,
+      [ 'encrypt', 'decrypt' ]
+    );
+
+    return key;
+  }
+  catch ( err ) {
+    console.log('Error getting key: ' + err );
+    return Promise.reject('Error: Failed getting encryptKey');
+  }
+
 }
 
 const encrypt = async function( content, key, iv ) {
-  const cipherText = await crypto.subtle.encrypt(
-    {
-      name: 'AES-GCM',
-      iv: iv
-    },
-    key,
-    new TextEncoder().encode(content)
-  );
+  try {
+    const cipherText = await crypto.subtle.encrypt(
+      {
+        name: 'AES-GCM',
+        iv: iv
+      },
+      key,
+      new TextEncoder().encode(content)
+    );
+  
+    const cipherTextU8 = new Uint8Array( cipherText );
+    const b64 = btoa( cipherTextU8 );
+    console.log('got key')
 
-  const cipherTextU8 = new Uint8Array( cipherText );
-  const b64 = btoa( cipherTextU8 );
-  return b64;
+    return b64;
+  }
+  catch( err ) {
+    console.log('failed to encrypt')
+    return Promise.reject('Error: Fail to encrypt');
+  }
+
 }
 
 const decrypt = async function( cipher, key, iv ) {
-  const buffer = new Uint8Array(atob(cipher).split(','));
-  const decryptText = await crypto.subtle.decrypt(
-    {
-      name: 'AES-GCM',
-      iv: iv
-    },
-    key,
-    buffer
-    );
-  
-  return new TextDecoder().decode( decryptText );
+  try {
+    const buffer = new Uint8Array(atob(cipher).split(','));
+    const decryptText = await crypto.subtle.decrypt(
+      {
+        name: 'AES-GCM',
+        iv: iv
+      },
+      key,
+      buffer
+      );
+    
+    return new TextDecoder().decode( decryptText );
+  }
+  catch ( err ) {
+    console.log('failed to decrypt');
+    return Promise.reject('Error: Fail to decrypt');
+  }
 }
 
 const getIv = () => crypto.getRandomValues(new Uint8Array(16));
@@ -75,4 +96,6 @@ async function test() {
 }
 
 // test()
-export default { getKey, getIv, encrypt, decrypt }
+//const getKey1 = () => '12345';
+export { getKey, getIv, encrypt, decrypt }
+

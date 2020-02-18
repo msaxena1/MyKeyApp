@@ -1,15 +1,21 @@
 import React, { useContext, useState } from 'react';
 import './Login.css';
 import Button from '../../components/Button/Button';
-import { AuthenticationContext } from '../../store/Store';
+import { getKey } from '../../crypto';
 
-const Login = React.memo( () => {
+const Login = React.memo( (props) => {
 
     const [ secrets, setSecrets ] = useState( { secret1: '', secret2: '' } );
+    const isAuthenticated = props.isAuthenticated;
+    const name = props.isFirstTime ? 'Select Secrets' : 'Login';
+    const setEncryptKey = props.setEncryptKey;
 
-    const authContext = useContext( AuthenticationContext );
-    const isAuthenticated = authContext.isAuthenticated;
-    const processSecrets = () => authContext.dispatch( { type: 'LOGIN', payload: secrets } );
+    const processSecrets = async ( event ) => {
+        const encryptKey = await getKey( secrets.secret1, secrets.secret2 );
+
+        setEncryptKey( { type: 'UPDATE_KEY', payload: encryptKey } );
+    };
+
 
     if ( !isAuthenticated ) {
         return (
@@ -25,7 +31,7 @@ const Login = React.memo( () => {
                         <input className="textInput" type="text" value={secrets.secret2} 
                         onChange={ event => setSecrets( { ...secrets, secret2: event.target.value } )}/>
                     </span>
-                    <Button name='Login' click={ processSecrets }  />
+                    <Button name={name} click={ processSecrets }  />
                 </form>
             </div>
         );
