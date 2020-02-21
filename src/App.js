@@ -11,11 +11,17 @@ const updateServer = async (url, key, newKeyList) => {
   const iv = getIv();
   const payload = {};
   const cryptoKey = key;
+  const encryptList = [];
 
-  payload.iv = iv;
+  for ( let i = 0; i < newKeyList.length; i++ ) {
+    const iv = getIv();
+    const item = JSON.stringify( newKeyList[i] );
+    const text =  await encrypt(item, cryptoKey, iv);
+    encryptList.push( { iv, text } );
+  }
 
-  const encryptText =  await encrypt(JSON.stringify(newKeyList), cryptoKey, iv);
-  payload.data = encryptText;
+  payload.data = encryptList;
+
 
   return fetch( url, {
       method: 'POST',
