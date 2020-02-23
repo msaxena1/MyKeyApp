@@ -31,7 +31,7 @@ expressApp.post('/data', function (req, res, next) {
 })
 
 expressApp.use(express.static('build'))
-expressApp.listen(3001)
+expressApp.listen(3000)
 
 const path = require('path');
 
