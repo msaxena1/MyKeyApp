@@ -73,13 +73,14 @@ const decrypt = async function( cipher, key, iv ) {
     return new TextDecoder().decode( decryptText );
   }
   catch ( err ) {
-    console.log('failed to decrypt');
+    console.log('failed to decrypt: ' + err);
     return Promise.reject('Error: Fail to decrypt');
   }
 }
 
 const getIv = () => crypto.getRandomValues(new Uint8Array(16));
 
+/*
 async function test() {
   const text1 = 'An obscure body in the S-K System, your majesty. The inhabitants refer to it as the planet Earth.';
   const text2 = 'The inhabitants refer to it as the planet Earth.';
@@ -96,6 +97,7 @@ async function test() {
 }
 
 // test()
-//const getKey1 = () => '12345';
+
+*/
 export { getKey, getIv, encrypt, decrypt }
 

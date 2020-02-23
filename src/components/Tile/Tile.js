@@ -5,20 +5,30 @@ import Modal from '../Modal/Modal';
 
 const Tile = React.memo( ( props ) => {
 
-
+    const getContent = props.content;
+    const index = props.index;
     const [ showModal, setShowModal ] = useState( false );
-    const toggleDetails = () => setShowModal( !showModal ); 
-    
+    const [ content, setContent ] = useState({});
+
+    const toggleDetails = () => { 
+        getContent(index)
+        .then( data => {
+            setContent(data);
+            setShowModal( !showModal );
+            return;
+        });
+    } 
+
     const modal = showModal ? ( 
                     <Modal 
-                        content={props.content} 
+                        content={content} 
                         url={props.url} 
                         name={props.name} 
                         click={toggleDetails}
                         delete={props.delete}
                     />
                     ) : null ;
-    // console.log('modal'+ JSON.stringify(modal))
+                    
     return (
         <React.Fragment>
             <div className='tile' >

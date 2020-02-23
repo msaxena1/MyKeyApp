@@ -2,7 +2,7 @@ import React from 'react';
 import './Modal.css';
 import Table from '../Table/Table';
 
-const Modal = React.memo( (props) => {
+const Modal = (props) => {
   const deleteEntry = () => {
     props.delete( props.name );
     props.click();
@@ -18,6 +18,6 @@ const Modal = React.memo( (props) => {
         
         </div>
     );
-});
+};
 
 export default Modal;

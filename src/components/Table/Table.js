@@ -1,7 +1,7 @@
 import React from 'react';
 import './Table.css';
 
-const Table = React.memo( ( props ) => {
+const Table = ( props ) => {
     const content = props.content;
 
     const tableContents = Object.keys(content).map( ( key, index ) => (
@@ -18,6 +18,6 @@ const Table = React.memo( ( props ) => {
             </tbody>
         </table>
         )
-} );
+};
 
 export default Table;
