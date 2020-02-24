@@ -24,6 +24,7 @@ const Tile = React.memo( ( props ) => {
                         content={content} 
                         url={props.url} 
                         name={props.name} 
+                        index={props.index}
                         click={toggleDetails}
                         delete={props.delete}
                     />

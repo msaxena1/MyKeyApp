@@ -4,7 +4,7 @@ import Table from '../Table/Table';
 
 const Modal = (props) => {
   const deleteEntry = () => {
-    props.delete( props.name );
+    props.delete( props.name, props.index );
     props.click();
 }
     return (

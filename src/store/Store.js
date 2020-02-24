@@ -1,21 +1,18 @@
 import React, { createContext, useReducer } from 'react';
 
-
 const initialState = {
-    isAuthenticated: false
+    s1: undefined,
+    s2: undefined
 };
-
-function checkSecrets( secret1, secret2 ) {
-    if ( secret1 && secret1 === secret2 )
-        return true;
-    return false;
-}
 
 function reducer( state, action ) {
     switch( action.type ) {
         case 'LOGIN':
-            console.log(action.type + ' received: ' + JSON.stringify(action.payload));
-            return { ...state, isAuthenticated: checkSecrets( action.payload.secret1, action.payload.secret2 ) };
+            console.log(action.type + ' received: ' + JSON.stringify(action.payload.key));
+            return { ...state,
+                s1 : action.payload.secret1,
+                s2: action.payload.secret2 
+            };
         default:
             console.log(' received: default' );
             return state;
@@ -25,10 +22,11 @@ function reducer( state, action ) {
 export const AuthenticationContext = createContext();
 export function AuthenticationProvider ( props ) {
     const [state, dispatch] = useReducer(reducer, initialState);
-    const isAuthenticated = state.isAuthenticated;
+    const s1 = state.s1;
+    const s2 = state.s2;
 
     return (
-        <AuthenticationContext.Provider value={{ isAuthenticated, dispatch }}>
+        <AuthenticationContext.Provider value={{ s1, s2, dispatch }}>
             { props.children }
         </AuthenticationContext.Provider>
     );
