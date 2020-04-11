@@ -1,7 +1,13 @@
 const express = require('express')
 const expressApp = express()
 const fs = require( 'fs' );
-const fileName = 'data.json';
+const fileName = '../data/data.json';
+const https = require( 'https' );
+
+const options = {
+	  key: fs.readFileSync( '../certs/server.key' ),
+	  cert: fs.readFileSync( '../certs/server.crt' )
+};
 expressApp.use(express.json())
 
 expressApp.get('/data', function (req, res) {
@@ -31,7 +37,8 @@ expressApp.post('/data', function (req, res, next) {
 })
 
 expressApp.use(express.static('build'))
-expressApp.listen(3000)
+https.createServer( options, expressApp ).listen( 3000 );
+//expressApp.listen(3000)
 
 const path = require('path');
 

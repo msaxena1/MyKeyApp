@@ -8,7 +8,7 @@ import AddNewForm from './components/AddNewForm/AddNewForm';
 import { getIv, encrypt, decrypt } from './crypto';
 
 const hostname = window.location.host;
-const url = `http://${ hostname }/data`;
+const url = `https://${ hostname }/data`;
 
 const saveEncryptedKeys = async (newKeyList) => {
   return fetch( url, {
