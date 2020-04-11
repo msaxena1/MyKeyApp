@@ -25,6 +25,11 @@ expressApp.get('/data', function (req, res) {
 })
 
 expressApp.post('/data', function (req, res, next) {
+let date = new Date();
+
+const ext = `${ date.getMonth() }-${date.getDate()}-${date.getFullYear()}`;
+
+  fs.writeFileSync(fileName+ext, JSON.stringify( req.body ), { encoding: 'utf8'} );
   fs.writeFile(fileName, JSON.stringify( req.body ), { encoding: 'utf8'}, (err, data) => {
     if (err) {
       console.log(JSON.stringify(err))
