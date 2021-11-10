@@ -8,7 +8,9 @@ const options = {
 	  key: fs.readFileSync( '../certs/server.key' ),
 	  cert: fs.readFileSync( '../certs/server.crt' )
 };
-expressApp.use(express.json())
+//expressApp.use(express.json())
+expressApp.use(express.json({limit: '50mb'}));
+expressApp.use(express.urlencoded({limit: '50mb'}));
 
 expressApp.get('/data', function (req, res) {
   fs.readFile(fileName, { encoding: 'utf8'}, (err, data) => {
