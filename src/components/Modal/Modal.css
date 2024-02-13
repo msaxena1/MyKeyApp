@@ -56,3 +56,8 @@ button {
     background-color: #f44336;
     width: 40%;
   }
+  .editbtnModal {
+    padding: 14px 20px;
+    background-color: #36f478;
+    width: 40%;
+  }

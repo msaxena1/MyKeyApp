@@ -1,23 +1,40 @@
-import React from 'react';
-import './Table.css';
+import "./Table.css";
 
-const Table = ( props ) => {
-    const content = props.content;
+const Table = ({ content }) => {
+  let tableContents;
 
-    const tableContents = Object.keys(content).map( ( key, index ) => (
+  tableContents = content.map((entry, index) => {
+    if (entry.update) {
+      return (
         <tr key={index}>
-            <td><strong>{key}</strong></td>
-            <td>{content[key]}</td> 
+          <td>
+            <strong>{entry.key}</strong>
+          </td>
+          <td>
+            <input
+              type="text"
+              value={entry.value}
+              onChange={(e) => entry.update(e.target.value)}
+            />
+          </td>
         </tr>
-    ) );
-
-    return (
-        <table>
-            <tbody>
-            {tableContents}
-            </tbody>
-        </table>
-        )
+      );
+    } else {
+      return (
+        <tr key={index}>
+          <td>
+            <strong>{entry.key}</strong>
+          </td>
+          <td>{entry.value}</td>
+        </tr>
+      );
+    }
+  });
+  return (
+    <table>
+      <tbody>{tableContents}</tbody>
+    </table>
+  );
 };
 
 export default Table;
